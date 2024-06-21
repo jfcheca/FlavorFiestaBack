@@ -74,5 +74,17 @@ CREATE TABLE IF NOT EXISTS OrdenProducto (
   FOREIGN KEY (id_producto) REFERENCES productos(id)
 );
 
+CREATE TABLE IF NOT EXISTS datosTarjetas (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  nombre VARCHAR(255)  NOT NULL,
+  apellido VARCHAR(255)  NOT NULL,
+  numero_tarjeta VARCHAR(255)  NOT NULL,
+  clave_seguridad VARCHAR(255)  NOT NULL,
+  vencimiento VARCHAR(255)  NOT NULL,
+  ultimos_cuatro_digitos VARCHAR(255)  NOT NULL,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);
+
 
 

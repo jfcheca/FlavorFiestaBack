@@ -96,14 +96,12 @@ type StoreInterfaceFavoritos interface {
 	AgregarFavorito(favorito domain.Favoritos) error
 }
 
-/*type StoreInterfaceProductoImagen interface {
-	// Read devuelve un paciente por su id
-	BuscarProductoImagen(id int) (domain.ProductoImagen, error)
-	// Create agrega un nuevo turno
-	CrearProductoImagen(turno domain.ProductoImagen) error
-	// Update actualiza un paciente
-	UpdateProductoImagen(id int, p domain.ProductoImagen) error
-	ExistsByIDProductoImagen(id int) bool
-	// Delete elimina un paciente
-	DeleteProductoImagen(id int) error
-}*/
+
+type StoreInterfaceDatosTarjetas interface {
+	CargarTarjeta(tarjeta domain.Tarjetas) error
+	BuscarTarjeta(id int) (domain.Tarjetas, error)
+	DeleteTarjeta(id int) error
+}
+
+
+
