@@ -21,7 +21,7 @@ func NewSqlStoreTarjetas(db *sql.DB) StoreInterfaceDatosTarjetas {
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREAR UN NUEVO ESTADO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (s *sqlStoreTarjetas) CargarTarjeta(tarjeta domain.Tarjetas) error {
-    query := "INSERT INTO datostarjetas (nombre, apellido, numero_tarjeta, clave_seguridad, vencimiento, ultimos_cuatro_digitos, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?);"
+    query := "INSERT INTO tarjetas (nombre, apellido, numero_tarjeta, clave_seguridad, vencimiento, ultimos_cuatro_digitos, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?);"
     stmt, err := s.db.Prepare(query)
     if err != nil {
         return fmt.Errorf("error preparing query: %w", err)
@@ -53,7 +53,7 @@ func (s *sqlStoreTarjetas) BuscarTarjeta(id int) (domain.Tarjetas, error) {
 }
 
 func (s *sqlStoreTarjetas) DeleteTarjeta(id int) error {
-	query := "DELETE FROM datostarjetas WHERE id = ?;"
+	query := "DELETE FROM tarjetas WHERE id = ?;"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
 		log.Fatal(err)

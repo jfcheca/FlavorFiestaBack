@@ -21,6 +21,8 @@ import (
 	"github.com/jfcheca/FlavorFiesta/internal/roles"
 	"github.com/jfcheca/FlavorFiesta/internal/usuarios"
 	"github.com/jfcheca/FlavorFiesta/internal/tarjetas"	
+	"github.com/jfcheca/FlavorFiesta/internal/informacioncompras"
+	"github.com/jfcheca/FlavorFiesta/internal/datosenvio"
  //   "github.com/jfcheca/FlavorFiesta/internal/favoritos"
 	"github.com/jfcheca/FlavorFiesta/pkg/store"
 	"github.com/joho/godotenv"
@@ -312,6 +314,39 @@ func main() {
 		tarjetasGroup.DELETE("/:id", tarjetasHandler.DeleteTarjeta())
 
 	
+	}
+
+		// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DATOS ENVÍO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+		storageDatosEnvio := store.NewSqlStoreDatosEnvios(bd)
+		repoDatosEnvio := datosenvio.NewRepository(storageDatosEnvio)
+		serviceDatosEnvio := datosenvio.NewService(repoDatosEnvio)
+		datosEnvioHandler := handler.NewDatosEnvioHandler(serviceDatosEnvio)
+	
+		// Rutas para el manejo de datos de envío
+		datosEnvioGroup := r.Group("/datosEnvio")
+		{
+			datosEnvioGroup.GET("/:id", datosEnvioHandler.GetByID())
+			datosEnvioGroup.GET("/", datosEnvioHandler.GetAll())
+			datosEnvioGroup.POST("/crear", datosEnvioHandler.Post())
+			datosEnvioGroup.DELETE("/:id", datosEnvioHandler.Delete())
+			datosEnvioGroup.PUT("/:id", datosEnvioHandler.Put())
+		}
+
+			// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INFORMACION COMPRA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	storageInformacionCompra := store.NewSqlStoreInformacionCompra(bd)
+	repoInformacionCompra := informacioncompra.NewRepositoryInformacionCompra(storageInformacionCompra)
+	serviceInformacionCompra := informacioncompra.NewService(repoInformacionCompra)
+	estadoInformacionCompra := handler.NewInformacionCompraHandler(serviceInformacionCompra)
+
+	// Rutas para el manejo de estados
+	informacionCompra := r.Group("/informacionCompra")
+	{
+		informacionCompra.GET("/:id", estadoInformacionCompra.GetByID())
+		informacionCompra.POST("/crear", estadoInformacionCompra.Post())
+		informacionCompra.PUT("/:id", estadoInformacionCompra.Put())
+		informacionCompra.DELETE("/:id", estadoInformacionCompra.Delete())
+
+
 	}
 
 	/*   // Endpoints protegidos con middleware de rol ADMIN

@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS OrdenProducto (
   FOREIGN KEY (id_producto) REFERENCES productos(id)
 );
 
-CREATE TABLE IF NOT EXISTS datosTarjetas (
+CREATE TABLE IF NOT EXISTS tarjetas (
   id INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT NOT NULL,
   nombre VARCHAR(255)  NOT NULL,
@@ -86,5 +86,27 @@ CREATE TABLE IF NOT EXISTS datosTarjetas (
   FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
 );
 
+CREATE TABLE IF NOT EXISTS DatosEnvio (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT NOT NULL,
+  nombre VARCHAR(255) NOT NULL,
+  apellido VARCHAR(255) NOT NULL,
+  direccion VARCHAR(255)  NOT NULL,
+  apartamento VARCHAR(255) NOT NULL,
+  ciudad VARCHAR(255) NOT NULL,
+  codigo_postal VARCHAR(255) NOT NULL,
+  estado VARCHAR(255) NOT NULL,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);
+CREATE TABLE IF NOT EXISTS InformacionCompra (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_orden INT NOT NULL,
+  id_datosenvio INT NOT NULL,
+  id_tarjetas INT NOT NULL,
+  FOREIGN KEY (id_datosenvio) REFERENCES DatosEnvio(id),
+  FOREIGN KEY (id_orden) REFERENCES ordenes(id),
+  FOREIGN KEY (id_tarjetas) REFERENCES tarjetas(id)
+
+);
 
 

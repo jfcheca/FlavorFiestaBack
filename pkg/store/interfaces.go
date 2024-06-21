@@ -104,5 +104,18 @@ type StoreInterfaceDatosTarjetas interface {
 	DeleteTarjeta(id int) error
 }
 
+type StoreInterfaceDatosEnvios interface {
+    CrearDatosEnvio(datosEnvio domain.DatosEnvio) error
+    BuscarTodosLosDatosEnvio() ([]domain.DatosEnvio, error)
+    BuscarDatosEnvio(id int) (domain.DatosEnvio, error)
+    EditarDatosEnvio(datosEnvio domain.DatosEnvio) error
+    EliminarDatosEnvio(id int) error
+}
 
+type StoreInterfaceInformacionCompra interface {
+    CrearInformacionCompra(ic domain.InformacionCompra) (domain.InformacionCompra, error)
+    BuscarInformacionCompra(id int) (domain.InformacionCompra, error)
+    UpdateInformacionCompra(id int, ic domain.InformacionCompra) (domain.InformacionCompra, error)
+    DeleteInformacionCompra(id int) error
+}
 

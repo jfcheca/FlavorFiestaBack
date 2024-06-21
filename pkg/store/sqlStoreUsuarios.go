@@ -100,7 +100,7 @@ func (s *sqlStoreUsuarios) BuscarUsuarioPorEmailYPassword3(email, password strin
 	var usuario domain.Usuarios
 	query := "SELECT * FROM usuarios WHERE email = ? AND password = ?"
 
-	err := s.db.QueryRow(query, email, password).Scan(&usuario.ID, &usuario.Nombre, &usuario.Email, &usuario.Telefono, &usuario.Password, &usuario.Id_rol)
+	err := s.db.QueryRow(query, email, password).Scan(&usuario.ID, &usuario.Nombre, &usuario.Email, &usuario.Telefono, &usuario.Password, &usuario.Id_rol, &usuario.Estado_Cuenta)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return false, err, domain.Usuarios{}
