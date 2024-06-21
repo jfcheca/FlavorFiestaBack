@@ -11,6 +11,7 @@ import (
 type Repository interface {
     
     AgregarFavorito(favorito domain.Favoritos) (domain.Favoritos, error)
+    DeleteFavorito(id int) error
 }
 
 type repository struct {
@@ -30,4 +31,12 @@ func (r *repository) AgregarFavorito(p domain.Favoritos) (domain.Favoritos, erro
         return domain.Favoritos{}, fmt.Errorf("error creando favorito: %w", err)
     }
     return p, nil
+}
+
+func (r *repository) DeleteFavorito(id int) error {
+	err := r.storage.DeleteFavorito(id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

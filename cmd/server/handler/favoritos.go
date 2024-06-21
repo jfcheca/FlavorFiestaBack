@@ -1,12 +1,14 @@
 package handler
 
 import (
-    "errors"
-    "fmt"
-    "github.com/gin-gonic/gin"
-    "github.com/jfcheca/FlavorFiesta/internal/domain"
-    "github.com/jfcheca/FlavorFiesta/internal/favoritos"
-    "github.com/jfcheca/FlavorFiesta/pkg/web"
+	"errors"
+	"fmt"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"github.com/jfcheca/FlavorFiesta/internal/domain"
+	"github.com/jfcheca/FlavorFiesta/internal/favoritos"
+	"github.com/jfcheca/FlavorFiesta/pkg/web"
 )
 
 type favoritosHandler struct {
@@ -47,4 +49,22 @@ func (h *favoritosHandler) Post() gin.HandlerFunc {
         // Devolver el favorito creado con su ID asignado
         c.JSON(200, createdFavorito)
     }
+}
+
+func (h *favoritosHandler) DeleteFavorito() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idParam := c.Param("id")
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			web.Failure(c, 400, errors.New("invalid id"))
+			return
+		}
+		err = h.s.DeleteFavorito(id)
+		if err != nil {
+			web.Failure(c, 404, err)
+			return
+		}
+		// Se elimina la categoria correctamente, enviar mensaje de éxito
+		c.JSON(200, gin.H{"message": "El favorito se elimino correctamente"})
+	}
 }

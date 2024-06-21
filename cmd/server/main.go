@@ -282,6 +282,7 @@ func main() {
 	{
 
 		favoritos.POST("/agregar", favoritoHandler.Post())
+		favoritos.DELETE("/:id", favoritoHandler.DeleteFavorito())
 	}
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ROLES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

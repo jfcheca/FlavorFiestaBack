@@ -94,6 +94,7 @@ type StoreInterfaceOrdenProducto interface {
 
 type StoreInterfaceFavoritos interface {
 	AgregarFavorito(favorito domain.Favoritos) error
+	DeleteFavorito(id int) error
 }
 
 

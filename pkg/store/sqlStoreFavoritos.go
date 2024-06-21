@@ -1,9 +1,11 @@
 package store
 
 import (
-    "database/sql"
-    "fmt"
-    "github.com/jfcheca/FlavorFiesta/internal/domain"
+	"database/sql"
+	"fmt"
+	"log"
+
+	"github.com/jfcheca/FlavorFiesta/internal/domain"
 )
 
 type sqlStoreFavoritos struct {
@@ -35,4 +37,21 @@ func (s *sqlStoreFavoritos) AgregarFavorito(favorito domain.Favoritos) error {
     }
 
     return nil
+}
+
+func (s *sqlStoreFavoritos) DeleteFavorito(id int) error {
+	query := "DELETE FROM favoritos WHERE id = ?;"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := stmt.Exec(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	return nil
 }
