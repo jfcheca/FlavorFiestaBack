@@ -3,7 +3,7 @@ package store
 import (
 	"github.com/jfcheca/FlavorFiesta/internal/domain"
 )
-
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> PRODUCTOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceProducto interface {
 	BuscarProducto(id int) (domain.Producto, error)
 	BuscarTodosLosProductos() ([]domain.Producto, error)
@@ -12,10 +12,10 @@ type StoreInterfaceProducto interface {
 	Patch(id int, updatedFields map[string]interface{}) (domain.Producto, error)
 	DeleteProducto(id int) error
 	ExistsByID(id int) bool
-
 	ObtenerNombreCategoria(id int) (string, error) // Añadir este método
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> IMAGENES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceImagenes interface {
 	//	CrearImagen(imagen domain.Imagen) error
 	CrearImagenes(imagenes []domain.Imagen) error
@@ -26,6 +26,7 @@ type StoreInterfaceImagenes interface {
 	ExistsByIDImagen(id int) bool
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> USUARIOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceUsuarios interface {
 	ExisteEmail(email string) (bool, error)
 	ExisteEmail2(email string) (domain.Usuarios, error)
@@ -37,18 +38,16 @@ type StoreInterfaceUsuarios interface {
 	BuscarUsuarioPorEmailYPassword2(email, password string) (domain.Usuarios, error)
 	BuscarUsuarioPorEmailYPassword3(email, password string) (bool, error, domain.Usuarios)
 	BuscarTodosLosUsuarios() ([]domain.Usuarios, error)
-
 	DeleteUsuario(id int) error
 	ExistsByIDUsuario(id int) (bool, error)
-
 	ActivarCuenta(email string) error
-
 	Update(usuario domain.Usuarios) error
 	UpdatePassword(id int, newPassword string) (domain.Usuarios, error)
 	ActivarCuentaEstado2(id int, estadoCuenta string) (domain.Usuarios, error)
 	PatchUsuario(id int, updatedFields map[string]interface{}) error
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CATEGORIAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceCategorias interface {
 	CrearCategoria(categoria domain.Categoria) error
 	BuscarCategoria(id int) (domain.Categoria, error)
@@ -59,6 +58,7 @@ type StoreInterfaceCategorias interface {
 	PatchCategoria(id int, updatedFields map[string]interface{}) error
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ROLES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceRoles interface {
 	CrearRol(rol domain.Rol) error
 	BuscarTodosLosRoles() ([]domain.Rol, error)
@@ -66,12 +66,14 @@ type StoreInterfaceRoles interface {
 	// BuscarRol(id int) (domain.Rol, error)
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ESTADOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceEstados interface {
 	CrearEstados(estado domain.Estado) error
 	BuscarTodosLosEstados() ([]domain.Estado, error)
 	BuscarEstado(id int) (domain.Estado, error)
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ORDENES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceOrdenes interface {
 	CrearOrden(orden domain.Orden) error
 	BuscarOrden(id int) (domain.Orden, error)
@@ -82,6 +84,7 @@ type StoreInterfaceOrdenes interface {
 	BuscarOrdenPorUsuarioYEstado2(UserID, Estado string) (bool, error, domain.Orden)
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ORDEN PRODUCTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceOrdenProducto interface {
 	CrearOrdenProducto(op domain.OrdenProducto) (domain.OrdenProducto, error)
 	BuscaOrdenProducto(id int) (domain.OrdenProducto, error)
@@ -92,18 +95,21 @@ type StoreInterfaceOrdenProducto interface {
 	DeleteOrdenProducto(id int) error
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FAVORITOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceFavoritos interface {
 	AgregarFavorito(favorito domain.Favoritos) error
 	DeleteFavorito(id int) error
+	BuscarFavorito(id int) (domain.Favoritos, error)
 }
 
-
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DATOS TARJETAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceDatosTarjetas interface {
 	CargarTarjeta(tarjeta domain.Tarjetas) error
 	BuscarTarjeta(id int) (domain.Tarjetas, error)
 	DeleteTarjeta(id int) error
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DATOS ENVIOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceDatosEnvios interface {
     CrearDatosEnvio(datosEnvio domain.DatosEnvio) error
     BuscarTodosLosDatosEnvio() ([]domain.DatosEnvio, error)
@@ -112,6 +118,7 @@ type StoreInterfaceDatosEnvios interface {
     EliminarDatosEnvio(id int) error
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INFORMACION COMPRA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceInformacionCompra interface {
     CrearInformacionCompra(ic domain.InformacionCompra) (domain.InformacionCompra, error)
     BuscarInformacionCompra(id int) (domain.InformacionCompra, error)
@@ -119,3 +126,16 @@ type StoreInterfaceInformacionCompra interface {
     DeleteInformacionCompra(id int) error
 }
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INGREDIENTES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+type StoreInterfaceIngredientes interface {
+	CrearIngredientes(ingredientes []domain.Ingredientes) error
+	BuscarIngredientes(id int) (domain.Ingredientes, error)
+
+}
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INSTRUCCIONES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+type StoreInterfaceInstrucciones interface {
+	CrearInstrucciones(instrucciones []domain.Instrucciones) error
+	BuscarInstrucciones(id int) (domain.Instrucciones, error)
+
+}

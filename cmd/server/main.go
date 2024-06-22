@@ -23,6 +23,8 @@ import (
 	"github.com/jfcheca/FlavorFiesta/internal/tarjetas"	
 	"github.com/jfcheca/FlavorFiesta/internal/informacioncompras"
 	"github.com/jfcheca/FlavorFiesta/internal/datosenvio"
+	"github.com/jfcheca/FlavorFiesta/internal/ingredientes"
+	"github.com/jfcheca/FlavorFiesta/internal/instrucciones"
  //   "github.com/jfcheca/FlavorFiesta/internal/favoritos"
 	"github.com/jfcheca/FlavorFiesta/pkg/store"
 	"github.com/joho/godotenv"
@@ -284,7 +286,9 @@ func main() {
 	{
 
 		favoritos.POST("/agregar", favoritoHandler.Post())
+		favoritos.GET("/:id", favoritoHandler.GetByID())
 		favoritos.DELETE("/:id", favoritoHandler.DeleteFavorito())
+		
 	}
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ROLES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -334,8 +338,8 @@ func main() {
 
 			// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INFORMACION COMPRA <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 	storageInformacionCompra := store.NewSqlStoreInformacionCompra(bd)
-	repoInformacionCompra := informacioncompra.NewRepositoryInformacionCompra(storageInformacionCompra)
-	serviceInformacionCompra := informacioncompra.NewService(repoInformacionCompra)
+	repoInformacionCompra := informacioncompras.NewRepositoryInformacionCompras(storageInformacionCompra)
+	serviceInformacionCompra := informacioncompras.NewService(repoInformacionCompra)
 	estadoInformacionCompra := handler.NewInformacionCompraHandler(serviceInformacionCompra)
 
 	// Rutas para el manejo de estados
@@ -347,6 +351,40 @@ func main() {
 		informacionCompra.DELETE("/:id", estadoInformacionCompra.Delete())
 
 
+	}
+
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INGREDIENTES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	storageIngredientes := store.NewSqlStoreIngredientes(bd)
+	repoIngredientes := ingredientes.NewRepository(storageIngredientes)
+	serviceIngredientes := ingredientes.NewService(repoIngredientes)
+	ingredientesHandler := handler.NewIngredientesHandler(serviceIngredientes)
+
+	// Rutas para el manejo de imágenes
+	ingredientesGroup := r.Group("/ingredientes")
+	{
+		ingredientesGroup.POST("/crear", ingredientesHandler.Post())
+		ingredientesGroup.GET("/:id", ingredientesHandler.GetByID())
+		
+//		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
+//		imagenesGroup.PATCH("/:id", imagenHandler.Patch())
+//		imagenesGroup.PUT("/:id", imagenHandler.Put())
+	}
+
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INSTRUCCIONES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	storageInstrucciones := store.NewSqlStoreInstrucciones(bd)
+	repoInstrucciones := instrucciones.NewRepository(storageInstrucciones)
+	serviceInstrucciones := instrucciones.NewService(repoInstrucciones)
+	instruccionesHandler := handler.NewInstruccionesHandler(serviceInstrucciones)
+
+	// Rutas para el manejo de imágenes
+	instruccionesGroup := r.Group("/instrucciones")
+	{
+		instruccionesGroup.POST("/crear", instruccionesHandler.Post())
+		instruccionesGroup.GET("/:id", instruccionesHandler.GetByID())
+		
+//		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
+//		imagenesGroup.PATCH("/:id", imagenHandler.Patch())
+//		imagenesGroup.PUT("/:id", imagenHandler.Put())
 	}
 
 	/*   // Endpoints protegidos con middleware de rol ADMIN

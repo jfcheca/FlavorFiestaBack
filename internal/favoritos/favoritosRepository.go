@@ -1,17 +1,18 @@
 package favoritos
 
 import (
-    "fmt"
-    "log"
+	"fmt"
+	"log"
 
-    "github.com/jfcheca/FlavorFiesta/internal/domain"
-    "github.com/jfcheca/FlavorFiesta/pkg/store"
+	"github.com/jfcheca/FlavorFiesta/internal/domain"
+	"github.com/jfcheca/FlavorFiesta/pkg/store"
 )
 
 type Repository interface {
     
     AgregarFavorito(favorito domain.Favoritos) (domain.Favoritos, error)
     DeleteFavorito(id int) error
+    BuscarFavorito(id int) (domain.Favoritos, error)
 }
 
 type repository struct {
@@ -33,6 +34,15 @@ func (r *repository) AgregarFavorito(p domain.Favoritos) (domain.Favoritos, erro
     return p, nil
 }
 
+func (r *repository) BuscarFavorito(id int) (domain.Favoritos, error) {
+    favorito, err := r.storage.BuscarFavorito(id)
+    if err != nil {
+        return domain.Favoritos{}, err
+    }
+    return favorito, nil
+}
+
+
 func (r *repository) DeleteFavorito(id int) error {
 	err := r.storage.DeleteFavorito(id)
 	if err != nil {
@@ -40,3 +50,4 @@ func (r *repository) DeleteFavorito(id int) error {
 	}
 	return nil
 }
+

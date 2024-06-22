@@ -7,6 +7,7 @@ import (
 type Service interface {
     AgregarFavorito(favorito domain.Favoritos) (domain.Favoritos, error)
     DeleteFavorito(id int) error
+    BuscarFavorito(id int) (domain.Favoritos, error)
 }
 
 type service struct {
@@ -25,6 +26,15 @@ func (s *service) AgregarFavorito(f domain.Favoritos) (domain.Favoritos, error) 
     return favorito, nil
 }
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTIENE FAVORITO POR ID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+func (s *service) BuscarFavorito(id int) (domain.Favoritos, error) {
+    favorito, err := s.r.BuscarFavorito(id)
+    if err != nil {
+        return domain.Favoritos{}, err
+    }
+    return favorito, nil
+}
+
 func (s *service) DeleteFavorito(id int) error {
 	err := s.r.DeleteFavorito(id)
 	if err != nil {
@@ -32,3 +42,4 @@ func (s *service) DeleteFavorito(id int) error {
 	}
 	return nil
 }
+

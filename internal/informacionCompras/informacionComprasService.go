@@ -1,4 +1,4 @@
-package informacioncompra
+package informacioncompras
 
 import (
 

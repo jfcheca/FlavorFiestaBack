@@ -1,4 +1,4 @@
-package informacioncompra
+package informacioncompras
 
 import (
 	"errors"
@@ -21,7 +21,7 @@ type repositoryInformacionCompra struct {
 }
 
 // NewRepositoryInformacionCompra crea un nuevo repositorio para InformacionCompra
-func NewRepositoryInformacionCompra(storage store.StoreInterfaceInformacionCompra) Repository {
+func NewRepositoryInformacionCompras(storage store.StoreInterfaceInformacionCompra) Repository {
 	return &repositoryInformacionCompra{storage: storage}
 }
 

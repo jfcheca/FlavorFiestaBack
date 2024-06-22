@@ -13,11 +13,11 @@ import (
 )
 
 type informacionCompraHandler struct {
-	s informacioncompra.Service
+	s informacioncompras.Service
 }
 
 // NewInformacionCompraHandler crea un nuevo controlador de InformacionCompra
-func NewInformacionCompraHandler(s informacioncompra.Service) *informacionCompraHandler {
+func NewInformacionCompraHandler(s informacioncompras.Service) *informacionCompraHandler {
 	return &informacionCompraHandler{
 		s: s,
 	}
