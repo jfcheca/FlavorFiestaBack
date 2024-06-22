@@ -71,6 +71,34 @@ func (h *favoritosHandler) GetByID() gin.HandlerFunc {
     }
 }
 
+func (h *favoritosHandler) GetFavoritosPorUsuario() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        idParam := c.Param("id")  // Cambio a "id"
+        if idParam == "" {
+            fmt.Println("id parameter is missing")
+            web.Failure(c, 400, errors.New("Invalid id"))
+            return
+        }
+
+        fmt.Printf("Received id param: %s\n", idParam)
+        idUsuario, err := strconv.Atoi(idParam)
+        if err != nil {
+            fmt.Printf("Error converting id: %v\n", err)
+            web.Failure(c, 400, errors.New("Invalid id"))
+            return
+        }
+        fmt.Printf("Fetching favoritos for user with ID: %d\n", idUsuario)
+
+        favoritos, err := h.s.BuscarFavoritosPorUsuario(idUsuario)
+        if err != nil {
+            fmt.Printf("Error fetching favoritos: %v\n", err)
+            web.Failure(c, 404, errors.New("No se encontraron favoritos para el usuario"))
+            return
+        }
+        web.Success(c, 200, favoritos)
+    }
+}
+
 func (h *favoritosHandler) DeleteFavorito() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idParam := c.Param("id")

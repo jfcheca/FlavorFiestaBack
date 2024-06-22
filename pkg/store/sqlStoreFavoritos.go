@@ -39,12 +39,68 @@ func (s *sqlStoreFavoritos) AgregarFavorito(favorito domain.Favoritos) error {
     return nil
 }
 
+func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
+    var favorito domain.Favoritos
+    query := "SELECT id, id_usuario, id_producto FROM flavorfiesta.fav WHERE id = ?"
+
+    err := s.db.QueryRow(query, id).Scan(&favorito.ID, &favorito.Id_usuario, &favorito.Id_producto)
+    if err != nil {
+        return domain.Favoritos{}, err
+    }
+
+    return favorito, nil
+}
+
+func (s *sqlStoreFavoritos) BuscarFavoritosPorUsuario(idUsuario int) ([]domain.Favoritos, error) {
+    var favoritos []domain.Favoritos
+    query := "SELECT id, id_usuario, id_producto FROM flavorfiesta.fav WHERE id_usuario = ?"
+
+    rows, err := s.db.Query(query, idUsuario)
+    if err != nil {
+        return nil, fmt.Errorf("error executing query: %w", err)
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var favorito domain.Favoritos
+        err := rows.Scan(&favorito.ID, &favorito.Id_usuario, &favorito.Id_producto)
+        if err != nil {
+            return nil, fmt.Errorf("error scanning row: %w", err)
+        }
+        favoritos = append(favoritos, favorito)
+    }
+
+    if err = rows.Err(); err != nil {
+        return nil, fmt.Errorf("error with rows: %w", err)
+    }
+
+    return favoritos, nil
+}
+
+func (s *sqlStoreFavoritos) DeleteFavorito(id int) error {
+	query := "DELETE FROM fav WHERE id = ?;"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := stmt.Exec(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  BUSCAR FAVORITO POR ID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 /*func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
     var favorito domain.Favoritos
 
     // Consulta para obtener el ID del producto asociado al favorito
-    query := "SELECT id_producto FROM flavorfiesta.fav WHERE id = ?"
+    query := "SELECT id_producto FROM fav WHERE id = ?"
 
     // Ejecutar la consulta y escanear el resultado
     err := s.db.QueryRow(query, id).Scan(&favorito.Id_producto)
@@ -85,31 +141,7 @@ func (s *sqlStoreFavoritos) AgregarFavorito(favorito domain.Favoritos) error {
 
     return favorito, nil
 }*/
-func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
-    var favorito domain.Favoritos
-    query := "SELECT * FROM flavorfiesta.fav INNER JOIN flavorfiesta.productos ON flavorfiesta.fav.id_producto = flavorfiesta.productos.id WHERE id_usuario = ?"
-    
 
-    row := s.db.QueryRow(query, id)
-    err := row.Scan(
-        &favorito.ID, 
-        &favorito.Id_usuario, 
-        &favorito.Id_producto,
-        &favorito.Producto.ID,
-        &favorito.Producto.Nombre,
-        &favorito.Producto.Descripcion,
-        &favorito.Producto.Precio,
-        &favorito.Producto.Stock,
-        &favorito.Producto.Ranking,
-        &favorito.Producto.Id_categoria,
-        &favorito.Producto.Categoria,
-    )
-    if err != nil {
-        return domain.Favoritos{}, err
-    }
-
-    return favorito, nil
-}
 
 
 /*func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
@@ -198,20 +230,4 @@ func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
     return favorito, nil
 }
 */
-func (s *sqlStoreFavoritos) DeleteFavorito(id int) error {
-	query := "DELETE FROM fav WHERE id = ?;"
-	stmt, err := s.db.Prepare(query)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := stmt.Exec(id)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = res.RowsAffected()
-	if err != nil {
-		return err
-	}
-	return nil
-}
 

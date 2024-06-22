@@ -100,6 +100,7 @@ type StoreInterfaceFavoritos interface {
 	AgregarFavorito(favorito domain.Favoritos) error
 	DeleteFavorito(id int) error
 	BuscarFavorito(id int) (domain.Favoritos, error)
+	BuscarFavoritosPorUsuario(idUsuario int) ([]domain.Favoritos, error) // Nueva función
 }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DATOS TARJETAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -138,4 +139,11 @@ type StoreInterfaceInstrucciones interface {
 	CrearInstrucciones(instrucciones []domain.Instrucciones) error
 	BuscarInstrucciones(id int) (domain.Instrucciones, error)
 
+}
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MEZCLAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+type StoreInterfaceMezclas interface {
+	CrearMezcla(mezcla domain.Mezclas) error
+	
+	
 }

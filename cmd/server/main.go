@@ -287,6 +287,7 @@ func main() {
 
 		favoritos.POST("/agregar", favoritoHandler.Post())
 		favoritos.GET("/:id", favoritoHandler.GetByID())
+		favoritos.GET("/usuario/:id", favoritoHandler.GetFavoritosPorUsuario())
 		favoritos.DELETE("/:id", favoritoHandler.DeleteFavorito())
 		
 	}

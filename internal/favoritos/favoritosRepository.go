@@ -13,6 +13,7 @@ type Repository interface {
     AgregarFavorito(favorito domain.Favoritos) (domain.Favoritos, error)
     DeleteFavorito(id int) error
     BuscarFavorito(id int) (domain.Favoritos, error)
+    BuscarFavoritosPorUsuario(idUsuario int) ([]domain.Favoritos, error)
 }
 
 type repository struct {
@@ -40,6 +41,14 @@ func (r *repository) BuscarFavorito(id int) (domain.Favoritos, error) {
         return domain.Favoritos{}, err
     }
     return favorito, nil
+}
+
+func (r *repository) BuscarFavoritosPorUsuario(idUsuario int) ([]domain.Favoritos, error) {
+    favoritos, err := r.storage.BuscarFavoritosPorUsuario(idUsuario)
+    if err != nil {
+        return nil, err
+    }
+    return favoritos, nil
 }
 
 
