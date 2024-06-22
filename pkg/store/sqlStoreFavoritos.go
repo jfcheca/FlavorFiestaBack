@@ -40,7 +40,7 @@ func (s *sqlStoreFavoritos) AgregarFavorito(favorito domain.Favoritos) error {
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  BUSCAR FAVORITO POR ID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
+/*func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
     var favorito domain.Favoritos
 
     // Consulta para obtener el ID del producto asociado al favorito
@@ -84,18 +84,32 @@ func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
     }
 
     return favorito, nil
-}
-/*func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
+}*/
+func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
     var favorito domain.Favoritos
-    query := "SELECT id, id_usuario, id_producto FROM flavorfiesta.fav JOIN productos ON fav.id_producto = producto.id WHERE id = ?"
+    query := "SELECT * FROM flavorfiesta.fav INNER JOIN flavorfiesta.productos ON flavorfiesta.fav.id_producto = flavorfiesta.productos.id WHERE id_usuario = ?"
+    
 
-    err := s.db.QueryRow(query, id).Scan(&favorito.ID, &favorito.Id_usuario, &favorito.Id_producto)
+    row := s.db.QueryRow(query, id)
+    err := row.Scan(
+        &favorito.ID, 
+        &favorito.Id_usuario, 
+        &favorito.Id_producto,
+        &favorito.Producto.ID,
+        &favorito.Producto.Nombre,
+        &favorito.Producto.Descripcion,
+        &favorito.Producto.Precio,
+        &favorito.Producto.Stock,
+        &favorito.Producto.Ranking,
+        &favorito.Producto.Id_categoria,
+        &favorito.Producto.Categoria,
+    )
     if err != nil {
         return domain.Favoritos{}, err
     }
 
     return favorito, nil
-}*/
+}
 
 
 /*func (s *sqlStoreFavoritos) BuscarFavorito(id int) (domain.Favoritos, error) {
