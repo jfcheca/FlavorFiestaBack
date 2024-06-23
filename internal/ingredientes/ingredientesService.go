@@ -7,6 +7,7 @@ import (
 type Service interface {
     CrearIngredientes(ingredientes []domain.Ingredientes) error
     BuscarIngredientes(id int) (domain.Ingredientes, error)
+    DeleteIngredientes(id int) error
 }
 
 type service struct {
@@ -27,4 +28,12 @@ func (s *service) BuscarIngredientes(id int) (domain.Ingredientes, error) {
         return domain.Ingredientes{}, err
     }
     return p, nil
+}
+
+func (s *service) DeleteIngredientes(id int) error {
+    err := s.r.DeleteIngredientes(id)
+    if err != nil {
+        return err
+    }
+    return nil
 }

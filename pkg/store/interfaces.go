@@ -134,13 +134,14 @@ type StoreInterfaceInformacionCompra interface {
 type StoreInterfaceIngredientes interface {
 	CrearIngredientes(ingredientes []domain.Ingredientes) error
 	BuscarIngredientes(id int) (domain.Ingredientes, error)
-
+	DeleteIngredientes(id int) error
 }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INSTRUCCIONES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceInstrucciones interface {
 	CrearInstrucciones(instrucciones []domain.Instrucciones) error
 	BuscarInstrucciones(id int) (domain.Instrucciones, error)
+	DeleteInstrucciones(id int) error
 
 }
 
@@ -148,6 +149,7 @@ type StoreInterfaceInstrucciones interface {
 type StoreInterfaceMezclas interface {
 	CrearMezcla(mezcla domain.Mezclas) error
 	BuscarMezcla(id int) (domain.Mezclas, error)
+	DeleteMezclas(id int) error
 	
 	
 }

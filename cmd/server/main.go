@@ -369,6 +369,7 @@ func main() {
 	{
 		ingredientesGroup.POST("/crear", ingredientesHandler.Post())
 		ingredientesGroup.GET("/:id", ingredientesHandler.GetByID())
+		ingredientesGroup.DELETE("/:id", ingredientesHandler.Delete())
 		
 //		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
 //		imagenesGroup.PATCH("/:id", imagenHandler.Patch())
@@ -386,6 +387,7 @@ func main() {
 	{
 		instruccionesGroup.POST("/crear", instruccionesHandler.Post())
 		instruccionesGroup.GET("/:id", instruccionesHandler.GetByID())
+		instruccionesGroup.DELETE("/:id", instruccionesHandler.Delete())
 		
 //		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
 //		imagenesGroup.PATCH("/:id", imagenHandler.Patch())
@@ -397,12 +399,14 @@ func main() {
 	repoMezclas := mezclas.NewRepository(storageMezclas)
 	serviceMezclas := mezclas.NewService(repoMezclas)
 	mezclasHandler := handler.NewMezclasHandler(serviceMezclas)
+	
 
 	// Rutas para el manejo de imágenes
 	mezclasGroup := r.Group("/mezclas")
 	{
 		mezclasGroup.POST("/crear", mezclasHandler.Post())
 		mezclasGroup.GET("/:id", mezclasHandler.GetByID())
+		mezclasGroup.DELETE("/:id", mezclasHandler.Delete())
 		
 //		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
 //		imagenesGroup.PATCH("/:id", imagenHandler.Patch())

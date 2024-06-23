@@ -11,6 +11,7 @@ import (
 type Repository interface {
     CrearInstrucciones(instrucciones []domain.Instrucciones) error
     BuscarInstrucciones(id int) (domain.Instrucciones, error)
+    DeleteInstrucciones(id int) error
 }
 
 type repository struct {
@@ -37,4 +38,12 @@ func (r *repository) BuscarInstrucciones(id int) (domain.Instrucciones, error) {
         return domain.Instrucciones{}, errors.New("instrucciones no encontradas")
     }
     return instrucciones, nil
+}
+
+func (r *repository) DeleteInstrucciones(id int) error {
+    err := r.storage.DeleteInstrucciones(id)
+    if err != nil {
+        return err
+    }
+    return nil
 }

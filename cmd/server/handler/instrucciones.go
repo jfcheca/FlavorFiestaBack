@@ -60,3 +60,21 @@ func (h *instruccionesHandler) GetByID() gin.HandlerFunc {
 		web.Success(c, 200, instrucciones)
 	}
 }
+
+func (h *instruccionesHandler) Delete() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idParam := c.Param("id")
+		id, err := strconv.Atoi(idParam)
+		if err != nil {
+			web.Failure(c, 400, errors.New("invalid id"))
+			return
+		}
+		err = h.s.DeleteInstrucciones(id)
+		if err != nil {
+			web.Failure(c, 404, err)
+			return
+		}
+		// Se elimina el producto correctamente, enviar mensaje de éxito
+		c.JSON(200, gin.H{"message": "La instruccion se elimino correctamente"})
+	}
+}

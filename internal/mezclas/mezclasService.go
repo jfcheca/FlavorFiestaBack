@@ -10,6 +10,7 @@ type Service interface {
 
 	CrearMezcla(p domain.Mezclas) (domain.Mezclas, error)
     BuscarMezcla(id int) (domain.Mezclas, error)
+    DeleteMezclas(id int) error
     
 
 }
@@ -40,4 +41,12 @@ func (s *service) BuscarMezcla(id int) (domain.Mezclas, error) {
         return domain.Mezclas{}, err
     }
     return categoria, nil
+}
+
+func (s *service) DeleteMezclas(id int) error {
+    err := s.r.DeleteMezclas(id)
+    if err != nil {
+        return err
+    }
+    return nil
 }

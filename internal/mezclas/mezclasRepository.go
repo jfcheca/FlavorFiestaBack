@@ -12,6 +12,7 @@ type Repository interface {
 
     CrearMezcla(p domain.Mezclas) (domain.Mezclas, error)
     BuscarMezcla(id int) (domain.Mezclas, error)
+	DeleteMezclas(id int) error
 	
 }
 
@@ -41,4 +42,12 @@ func (r *repository) BuscarMezcla(id int) (domain.Mezclas, error) {
 	}
 	return producto, nil
 
+}
+
+func (r *repository) DeleteMezclas(id int) error {
+    err := r.storage.DeleteMezclas(id)
+    if err != nil {
+        return err
+    }
+    return nil
 }

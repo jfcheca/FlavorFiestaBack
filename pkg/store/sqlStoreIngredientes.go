@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
+
 	"github.com/jfcheca/FlavorFiesta/internal/domain"
 )
 
@@ -50,4 +52,21 @@ func (s *sqlStoreIngredientes) BuscarIngredientes(id int) (domain.Ingredientes, 
 	}
 
 	return ingrediente, nil
+}
+
+func (s *sqlStoreIngredientes) DeleteIngredientes(id int) error {
+	query := "DELETE FROM ingredientes WHERE id = ?;"
+	stmt, err := s.db.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	res, err := stmt.Exec(id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	return nil
 }
