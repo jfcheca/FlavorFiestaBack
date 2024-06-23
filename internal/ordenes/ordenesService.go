@@ -14,6 +14,7 @@ type Service interface {
 	Patch(id int, updatedFields map[string]interface{}) (domain.Orden, error)
 	BuscarOrdenPorUsuarioYEstado(UserID, Estado string) (bool, error)
 	BuscarOrdenPorUsuarioYEstado2(UserID, Estado string) (bool, error, domain.Orden)
+	ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID int) ([]domain.Orden, error) 
 }
 
 type service struct {
@@ -105,4 +106,13 @@ func (s *service) DeleteOrden(id int) error {
 		return err
 	}
 	return nil
+}
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTENER TODAS LAS ORDENES POR ID_USUARIO Y ESTADO DIFERENTE A 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+func (s *service) ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID int) ([]domain.Orden, error) {
+	ordenes, err := s.r.ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID)
+	if err != nil {
+		return nil, err
+	}
+	return ordenes, nil
 }

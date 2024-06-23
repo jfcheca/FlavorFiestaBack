@@ -83,6 +83,7 @@ type StoreInterfaceOrdenes interface {
 	ExistsByIDOrden(id int) bool
 	BuscarOrdenPorUsuarioYEstado(UserID, Estado string) (bool, error)
 	BuscarOrdenPorUsuarioYEstado2(UserID, Estado string) (bool, error, domain.Orden)
+	ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID int) ([]domain.Orden, error)
 }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ORDEN PRODUCTO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -126,6 +127,7 @@ type StoreInterfaceInformacionCompra interface {
     BuscarInformacionCompra(id int) (domain.InformacionCompra, error)
     UpdateInformacionCompra(id int, ic domain.InformacionCompra) (domain.InformacionCompra, error)
     DeleteInformacionCompra(id int) error
+	ObtenerInformacionCompletaCompra(idOrden int) (domain.Orden, domain.InformacionCompra, domain.DatosEnvio, domain.Tarjetas, []domain.OrdenProducto, error)
 }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> INGREDIENTES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

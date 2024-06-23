@@ -237,6 +237,7 @@ func main() {
 	ordenesGroup := r.Group("/ordenes")
 	{
 		ordenesGroup.GET("/:id", ordenHandler.GetOrdenByID())
+		ordenesGroup.GET("/user/:userID/estado-diferente-a-1", ordenHandler.ObtenerOrdenesPorUsuarioYEstadoDiferenteA1())
 		ordenesGroup.GET("/usuario&estado", ordenHandler.GetOrdenByUserIDyOrden())
 		ordenesGroup.GET("/usuario&estadoConDatos", ordenHandler.GetOrdenByUsuarioYEstadoConDatos())
 		ordenesGroup.POST("/crear", ordenHandler.Post())
@@ -349,6 +350,7 @@ func main() {
 	informacionCompra := r.Group("/informacionCompra")
 	{
 		informacionCompra.GET("/:id", estadoInformacionCompra.GetByID())
+		informacionCompra.GET("/informacionCompleta/:id_orden", estadoInformacionCompra.ObtenerInformacionCompletaCompraByIDOrden()) 
 		informacionCompra.POST("/crear", estadoInformacionCompra.Post())
 		informacionCompra.PUT("/:id", estadoInformacionCompra.Put())
 		informacionCompra.DELETE("/:id", estadoInformacionCompra.Delete())

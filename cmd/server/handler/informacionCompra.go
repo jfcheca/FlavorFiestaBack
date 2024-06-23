@@ -115,3 +115,29 @@ func (h *informacionCompraHandler) Delete() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"message": "La informacion de compra se elimino correctamente"})
 	}
 }
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTIENE INFORMACION COMPLETA COMPRA POR ID_ORDEN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+func (h *informacionCompraHandler) ObtenerInformacionCompletaCompraByIDOrden() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idOrdenParam := c.Param("id_orden")
+		idOrden, err := strconv.Atoi(idOrdenParam)
+		if err != nil {
+			web.Failure(c, http.StatusBadRequest, errors.New("Invalid id_orden"))
+			return
+		}
+
+		orden, ic, de, tarjeta, productos, err := h.s.ObtenerInformacionCompletaCompra(idOrden)
+		if err != nil {
+			web.Failure(c, http.StatusNotFound, errors.New("InformacionCompletaCompra not found"))
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"orden":             orden,
+			"informacion_compra": ic,
+			"datos_envio":       de,
+			"tarjeta":           tarjeta,
+			"OrdenProducto":         productos,
+		})
+	}
+}

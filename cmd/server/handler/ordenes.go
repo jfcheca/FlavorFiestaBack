@@ -181,3 +181,21 @@ func (h *ordenHandler) Delete() gin.HandlerFunc {
 		}
 	}
 }
+func (h *ordenHandler) ObtenerOrdenesPorUsuarioYEstadoDiferenteA1() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        userIDStr := c.Param("userID")
+        userID, err := strconv.Atoi(userIDStr)
+        if err != nil {
+            web.Failure(c, 400, errors.New("invalid userID"))
+            return
+        }
+
+        ordenes, err := h.s.ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID)
+        if err != nil {
+            web.Failure(c, 500, errors.New("failed to retrieve orders"))
+            return
+        }
+
+        web.Success(c, 200, ordenes)
+    }
+}

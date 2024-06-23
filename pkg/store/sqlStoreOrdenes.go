@@ -182,3 +182,28 @@ func (s *sqlStore) ExistsByIDOrden(id int) bool {
 	}
 	return count > 0
 }
+
+func (s *sqlStore) ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID int) ([]domain.Orden, error) {
+    query := "SELECT * FROM ordenes WHERE id_usuario = ? AND id_estado != 1"
+    rows, err := s.db.Query(query, userID)
+    if err != nil {
+        return nil, fmt.Errorf("error executing query: %w", err)
+    }
+    defer rows.Close()
+
+    var ordenes []domain.Orden
+    for rows.Next() {
+        var orden domain.Orden
+        err := rows.Scan(&orden.ID, &orden.ID_Usuario, &orden.ID_Estado, &orden.FechaOrden, &orden.Total)
+        if err != nil {
+            return nil, fmt.Errorf("error scanning row: %w", err)
+        }
+        ordenes = append(ordenes, orden)
+    }
+
+    if err = rows.Err(); err != nil {
+        return nil, fmt.Errorf("error iterating over rows: %w", err)
+    }
+
+    return ordenes, nil
+}

@@ -16,6 +16,7 @@ type Repository interface {
 	DeleteOrden(id int) error
 	BuscarOrdenPorUsuarioYEstado(UserID, Estado string) (bool, error)
 	BuscarOrdenPorUsuarioYEstado2(UserID, Estado string) (bool, error, domain.Orden)
+    ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID int) ([]domain.Orden, error) 
 }
 
 type repository struct {
@@ -123,4 +124,13 @@ func (r *repository) DeleteOrden(id int) error {
 		return err
 	}
 	return nil
+}
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTENER TODAS LAS ORDENES POR ID_USUARIO Y ESTADO DIFERENTE A 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+func (r *repository) ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID int) ([]domain.Orden, error) {
+    ordenes, err := r.storage.ObtenerOrdenesPorUsuarioYEstadoDiferenteA1(userID)
+    if err != nil {
+        return nil, errors.New("error obteniendo ordenes")
+    }
+    return ordenes, nil
 }

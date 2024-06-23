@@ -13,6 +13,7 @@ type Service interface {
 	BuscarInformacionCompra(id int) (domain.InformacionCompra, error)
 	UpdateInformacionCompra(id int, ic domain.InformacionCompra) (domain.InformacionCompra, error)
 	DeleteInformacionCompra(id int) error
+	ObtenerInformacionCompletaCompra(idOrden int) (domain.Orden, domain.InformacionCompra, domain.DatosEnvio, domain.Tarjetas, []domain.OrdenProducto, error)
 }
 
 // NewService crea un nuevo servicio para InformacionCompra
@@ -50,4 +51,12 @@ func (s *service) DeleteInformacionCompra(id int) error {
 		return err
 	}
 	return nil
+}
+
+func (s *service) ObtenerInformacionCompletaCompra(idOrden int) (domain.Orden, domain.InformacionCompra, domain.DatosEnvio, domain.Tarjetas, []domain.OrdenProducto, error) {
+	orden, ic, de, tarjeta, productos, err := s.r.ObtenerInformacionCompletaCompra(idOrden)
+	if err != nil {
+		return domain.Orden{}, domain.InformacionCompra{}, domain.DatosEnvio{}, domain.Tarjetas{}, nil, err
+	}
+	return orden, ic, de, tarjeta, productos, nil
 }
