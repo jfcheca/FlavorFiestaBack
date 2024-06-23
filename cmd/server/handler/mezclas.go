@@ -95,3 +95,16 @@ func (h *mezclasHandler) Delete() gin.HandlerFunc {
 	}
 }
 
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTIENE TODAS LAS MEZCLAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+func (h *mezclasHandler) GetAll() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        productos, err := h.s.BuscarTodasLasMezclas()
+        if err != nil {
+            web.Failure(c, 500, fmt.Errorf("error buscando todas las mezclas: %w", err))
+            return
+        }
+        web.Success(c, 200, productos)
+    }
+}

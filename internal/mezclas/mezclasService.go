@@ -1,7 +1,7 @@
 package mezclas
 
 import (
-
+	"fmt"
 
 	"github.com/jfcheca/FlavorFiesta/internal/domain"
 )
@@ -11,6 +11,7 @@ type Service interface {
 	CrearMezcla(p domain.Mezclas) (domain.Mezclas, error)
     BuscarMezcla(id int) (domain.Mezclas, error)
     DeleteMezclas(id int) error
+    BuscarTodasLasMezclas() ([]domain.Mezclas, error)
     
 
 }
@@ -49,4 +50,13 @@ func (s *service) DeleteMezclas(id int) error {
         return err
     }
     return nil
+}
+
+
+func (s *service) BuscarTodasLasMezclas() ([]domain.Mezclas, error) {
+    productos, err := s.r.BuscarTodasLasMezclas()
+    if err != nil {
+        return nil, fmt.Errorf("error buscando todas las mezclas: %w", err)
+    }
+    return productos, nil
 }

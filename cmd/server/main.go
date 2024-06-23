@@ -407,6 +407,7 @@ func main() {
 		mezclasGroup.POST("/crear", mezclasHandler.Post())
 		mezclasGroup.GET("/:id", mezclasHandler.GetByID())
 		mezclasGroup.DELETE("/:id", mezclasHandler.Delete())
+		mezclasGroup.GET("/", mezclasHandler.GetAll())
 		
 //		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
 //		imagenesGroup.PATCH("/:id", imagenHandler.Patch())
@@ -421,7 +422,12 @@ func main() {
 	}
 	*/
 
-	// Ejecutar el servidor en el puerto 8080
-	r.Run(":8080")
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ACA ES LA CONEXION PARA EL >
+    // Ejecutar el servidor en el puerto 8080
+//    r.Run(":8080")
 
+ // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>ACA ES LA CONEXION PARA LA>
+ if err := http.ListenAndServe(":8080", r); err != nil {
+    panic(err)
+}
 }

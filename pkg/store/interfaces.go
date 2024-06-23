@@ -150,6 +150,7 @@ type StoreInterfaceMezclas interface {
 	CrearMezcla(mezcla domain.Mezclas) error
 	BuscarMezcla(id int) (domain.Mezclas, error)
 	DeleteMezclas(id int) error
+	BuscarTodasLasMezclas() ([]domain.Mezclas, error)
 	
 	
 }
