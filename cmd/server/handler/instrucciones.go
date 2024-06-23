@@ -24,24 +24,25 @@ func NewInstruccionesHandler(s instrucciones.Service) *instruccionesHandler {
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CREA NUEVA INSTRUCCION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (h *instruccionesHandler) Post() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var instrucciones []domain.Instrucciones
-		err := c.ShouldBindJSON(&instrucciones)
-		if err != nil {
-			web.Failure(c, 400, errors.New("invalid json: "+err.Error()))
-			fmt.Println("Error al hacer bind del JSON:", err)
-			return
-		}
+    return func(c *gin.Context) {
+        var instrucciones []domain.Instrucciones
+        err := c.ShouldBindJSON(&instrucciones)
+        if err != nil {
+            web.Failure(c, 400, errors.New("invalid json: "+err.Error()))
+            fmt.Println("Error al hacer bind del JSON:", err)
+            return
+        }
 
-		err = h.s.CrearInstrucciones(instrucciones)
-		if err != nil {
-			web.Failure(c, 500, fmt.Errorf("failed to create ingredients: %w", err))
-			return
-		}
+        err = h.s.CrearInstrucciones(instrucciones)
+        if err != nil {
+            web.Failure(c, 500, fmt.Errorf("failed to create instructions: %w", err))
+            return
+        }
 
-		web.Success(c, 200, "Ingredientes creados correctamente")
-	}
+        web.Success(c, 200, "Instrucciones creadas correctamente")
+    }
 }
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTIENE IMAGEN POR ID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (h *instruccionesHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {

@@ -18,21 +18,23 @@ func NewSqlStoreInstrucciones(db *sql.DB) StoreInterfaceInstrucciones {
 }
 
 func (s *sqlStoreInstrucciones) CrearInstrucciones(instrucciones []domain.Instrucciones) error {
-	query := "INSERT INTO instrucciones (descripcion) VALUES (?);"
-	stmt, err := s.db.Prepare(query)
-	if err != nil {
-		return fmt.Errorf("error al preparar la consulta: %w", err)
-	}
-	defer stmt.Close()
+    fmt.Println("SQL Store: CrearInstrucciones llamado con:", instrucciones)
+    query := "INSERT INTO instrucciones (descripcion, id_mezclas) VALUES (?, ?);"
+    stmt, err := s.db.Prepare(query)
+    if err != nil {
+        return fmt.Errorf("error al preparar la consulta: %w", err)
+    }
+    defer stmt.Close()
 
-	for _, instrucciones := range instrucciones {
-		_, err := stmt.Exec(instrucciones.Descripcion)
-		if err != nil {
-			return fmt.Errorf("error al ejecutar la consulta para el ingrediente %v: %w", instrucciones, err)
-		}
-	}
+    for _, instruccion := range instrucciones {
+        fmt.Println("Ejecutando consulta para la instrucción:", instruccion)
+        _, err := stmt.Exec(instruccion.Descripcion, instruccion.Id_mezclas)
+        if err != nil {
+            return fmt.Errorf("error al ejecutar la consulta para la instrucción %v: %w", instruccion, err)
+        }
+    }
 
-	return nil
+    return nil
 }
 
 func (s *sqlStoreInstrucciones) BuscarInstrucciones(id int) (domain.Instrucciones, error) {

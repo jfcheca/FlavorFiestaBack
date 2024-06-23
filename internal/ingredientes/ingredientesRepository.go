@@ -1,10 +1,11 @@
 package ingredientes
 
 import (
-    "errors"
+	"errors"
+	"fmt"
 
-    "github.com/jfcheca/FlavorFiesta/internal/domain"
-    "github.com/jfcheca/FlavorFiesta/pkg/store"
+	"github.com/jfcheca/FlavorFiesta/internal/domain"
+	"github.com/jfcheca/FlavorFiesta/pkg/store"
 )
 
 type Repository interface {
@@ -21,8 +22,10 @@ func NewRepository(storage store.StoreInterfaceIngredientes) Repository {
 }
 
 func (r *repository) CrearIngredientes(ingredientes []domain.Ingredientes) error {
+    fmt.Println("Repositorio: CrearIngredientes llamado con:", ingredientes)
     err := r.storage.CrearIngredientes(ingredientes)
     if err != nil {
+        fmt.Println("Error en el storage:", err)
         return errors.New("Error creando Ingredientes, producto inexistente")
     }
     return nil

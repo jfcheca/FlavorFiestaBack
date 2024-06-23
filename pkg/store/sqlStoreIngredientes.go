@@ -18,7 +18,8 @@ func NewSqlStoreIngredientes(db *sql.DB) StoreInterfaceIngredientes {
 }
 
 func (s *sqlStoreIngredientes) CrearIngredientes(ingredientes []domain.Ingredientes) error {
-	query := "INSERT INTO ingredientes (descripcion) VALUES (?);"
+	fmt.Println("SQL Store: CrearIngredientes llamado con:", ingredientes)
+	query := "INSERT INTO ingredientes (descripcion, id_mezclas) VALUES (?, ?);"
 	stmt, err := s.db.Prepare(query)
 	if err != nil {
 		return fmt.Errorf("error al preparar la consulta: %w", err)
@@ -26,7 +27,8 @@ func (s *sqlStoreIngredientes) CrearIngredientes(ingredientes []domain.Ingredien
 	defer stmt.Close()
 
 	for _, ingrediente := range ingredientes {
-		_, err := stmt.Exec(ingrediente.Descripcion)
+		fmt.Println("Ejecutando consulta para el ingrediente:", ingrediente)
+		_, err := stmt.Exec(ingrediente.Descripcion, ingrediente.Id_mezclas)
 		if err != nil {
 			return fmt.Errorf("error al ejecutar la consulta para el ingrediente %v: %w", ingrediente, err)
 		}

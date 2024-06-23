@@ -19,6 +19,7 @@ type StoreInterfaceProducto interface {
 type StoreInterfaceImagenes interface {
 	//	CrearImagen(imagen domain.Imagen) error
 	CrearImagenes(imagenes []domain.Imagen) error
+	CrearImagenesMezclas(imagenes []domain.Imagen) error
 	BuscarImagen(id int) (domain.Imagen, error)
 	UpdateImagen(id int, p domain.Imagen) (domain.Imagen, error)
 	DeleteImagen(id int) error
@@ -144,6 +145,7 @@ type StoreInterfaceInstrucciones interface {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MEZCLAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceMezclas interface {
 	CrearMezcla(mezcla domain.Mezclas) error
+	BuscarMezcla(id int) (domain.Mezclas, error)
 	
 	
 }

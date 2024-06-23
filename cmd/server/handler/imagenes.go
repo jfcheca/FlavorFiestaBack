@@ -46,6 +46,26 @@ func (h *imagenesHandler) Post() gin.HandlerFunc {
         web.Success(c, 200, "Imágenes creadas correctamente")
     }
 }
+
+func (h *imagenesHandler) PostMezcla() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        var imagenes []domain.Imagen
+        err := c.ShouldBindJSON(&imagenes)
+        if err != nil {
+            web.Failure(c, http.StatusBadRequest, fmt.Errorf("JSON inválido: %w", err))
+            return
+        }
+
+        err = h.s.CrearImagenesMezclas(imagenes) // Utiliza el método correcto
+        if err != nil {
+            web.Failure(c, http.StatusInternalServerError, fmt.Errorf("error al crear imágenes: %w", err))
+            return
+        }
+
+        web.Success(c, http.StatusOK, "Imágenes creadas correctamente")
+    }
+}
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTIENE IMAGEN POR ID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (h *imagenesHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {

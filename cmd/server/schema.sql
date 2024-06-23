@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS productos (
     id_categoria INT,
     nombre VARCHAR(255) NOT NULL,
     descripcion VARCHAR(255) NOT NULL,
---    categoria VARCHAR(255) NOT NULL,
     precio DECIMAL(50,2) NOT NULL,
     stock INT NOT NULL,
     ranking DECIMAL(20,2) NOT NULL,
@@ -18,11 +17,27 @@ CREATE TABLE IF NOT EXISTS productos (
 
 CREATE TABLE IF NOT EXISTS imagenes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_producto INT NOT NULL,  -- Agregar este campo para la relación
+    id_producto INT ,
     titulo VARCHAR(255) NOT NULL,
     url VARCHAR(255) NOT NULL,
     FOREIGN KEY (id_producto) REFERENCES productos(id)
 );
+
+CREATE TABLE IF NOT EXISTS mezclas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS imgmezcla (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_mezclas INT ,
+    titulo VARCHAR(255) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (id_mezclas) REFERENCES mezclas(id) 
+);
+
+
 
 CREATE TABLE IF NOT EXISTS roles (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -110,15 +125,22 @@ CREATE TABLE IF NOT EXISTS InformacionCompra (
 
 );
 
+
+
+
 CREATE TABLE IF NOT EXISTS ingredientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(255) NOT NULL
-
+    descripcion VARCHAR(255) NOT NULL,
+    id_mezclas INT NOT NULL,
+    FOREIGN KEY (id_mezclas) REFERENCES mezclas(id)
 );
 
 CREATE TABLE IF NOT EXISTS instrucciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(255) NOT NULL
+    descripcion VARCHAR(255) NOT NULL,
+    id_mezclas INT NOT NULL,
+    FOREIGN KEY (id_mezclas) REFERENCES mezclas(id)
 
 );
+
 

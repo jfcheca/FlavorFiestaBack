@@ -1,7 +1,9 @@
 package instrucciones
 
 import (
-    "github.com/jfcheca/FlavorFiesta/internal/domain"
+	"fmt"
+
+	"github.com/jfcheca/FlavorFiesta/internal/domain"
 )
 
 type Service interface {
@@ -20,7 +22,7 @@ func NewService(r Repository) Service {
 func (s *service) CrearInstrucciones(instrucciones []domain.Instrucciones) error {
     err := s.r.CrearInstrucciones(instrucciones)
     if err != nil {
-        return err
+        return fmt.Errorf("error creando instrucciones: %w", err)
     }
     return nil
 }

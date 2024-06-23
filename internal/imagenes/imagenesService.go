@@ -12,6 +12,7 @@ type Service interface {
 	CrearImagenes(imagenes []domain.Imagen) error
 	DeleteImagen(id int) error
 	UpdateImagen(id int, p domain.Imagen) (domain.Imagen, error)
+    CrearImagenesMezclas(imagenes []domain.Imagen) error
 
 	
 }
@@ -35,6 +36,15 @@ func (s *service) CrearImagenes(imagenes []domain.Imagen) error {
     }
     return nil
 }
+
+func (s *service) CrearImagenesMezclas(imagenes []domain.Imagen) error {
+    err := s.r.CrearImagenesMezclas(imagenes)
+    if err != nil {
+        return fmt.Errorf("error al crear imágenes en el servicio: %w", err)
+    }
+    return nil
+}
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> OBTIENE IMAGEN POR ID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (s *service) BuscarImagen(id int) (domain.Imagen, error) {
 	p, err := s.r.BuscarImagen(id)

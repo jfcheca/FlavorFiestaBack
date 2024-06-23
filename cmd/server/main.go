@@ -25,6 +25,7 @@ import (
 	"github.com/jfcheca/FlavorFiesta/internal/datosenvio"
 	"github.com/jfcheca/FlavorFiesta/internal/ingredientes"
 	"github.com/jfcheca/FlavorFiesta/internal/instrucciones"
+	"github.com/jfcheca/FlavorFiesta/internal/mezclas"
  //   "github.com/jfcheca/FlavorFiesta/internal/favoritos"
 	"github.com/jfcheca/FlavorFiesta/pkg/store"
 	"github.com/joho/godotenv"
@@ -169,6 +170,7 @@ func main() {
 	{
 		imagenesGroup.GET("/:id", imagenHandler.GetByID())
 		imagenesGroup.POST("/crear", imagenHandler.Post())
+		imagenesGroup.POST("/crearmezcla", imagenHandler.PostMezcla())
 		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
 		imagenesGroup.PATCH("/:id", imagenHandler.Patch())
 		imagenesGroup.PUT("/:id", imagenHandler.Put())
@@ -382,6 +384,23 @@ func main() {
 	{
 		instruccionesGroup.POST("/crear", instruccionesHandler.Post())
 		instruccionesGroup.GET("/:id", instruccionesHandler.GetByID())
+		
+//		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
+//		imagenesGroup.PATCH("/:id", imagenHandler.Patch())
+//		imagenesGroup.PUT("/:id", imagenHandler.Put())
+	}
+
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MEZCLAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+	storageMezclas := store.NewSqlStoreMezclas(bd)
+	repoMezclas := mezclas.NewRepository(storageMezclas)
+	serviceMezclas := mezclas.NewService(repoMezclas)
+	mezclasHandler := handler.NewMezclasHandler(serviceMezclas)
+
+	// Rutas para el manejo de imágenes
+	mezclasGroup := r.Group("/mezclas")
+	{
+		mezclasGroup.POST("/crear", mezclasHandler.Post())
+		mezclasGroup.GET("/:id", mezclasHandler.GetByID())
 		
 //		imagenesGroup.DELETE("/:id", imagenHandler.Delete())
 //		imagenesGroup.PATCH("/:id", imagenHandler.Patch())

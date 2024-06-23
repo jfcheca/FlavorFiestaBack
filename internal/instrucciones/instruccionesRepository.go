@@ -1,10 +1,11 @@
 package instrucciones
 
 import (
-    "errors"
+	"errors"
+	"fmt"
 
-    "github.com/jfcheca/FlavorFiesta/internal/domain"
-    "github.com/jfcheca/FlavorFiesta/pkg/store"
+	"github.com/jfcheca/FlavorFiesta/internal/domain"
+	"github.com/jfcheca/FlavorFiesta/pkg/store"
 )
 
 type Repository interface {
@@ -21,8 +22,10 @@ func NewRepository(storage store.StoreInterfaceInstrucciones) Repository {
 }
 
 func (r *repository) CrearInstrucciones(instrucciones []domain.Instrucciones) error {
+    fmt.Println("Repositorio: CrearInstrucciones llamado con:", instrucciones)
     err := r.storage.CrearInstrucciones(instrucciones)
     if err != nil {
+        fmt.Println("Error en el storage:", err)
         return errors.New("Error creando Instrucciones, producto inexistente")
     }
     return nil

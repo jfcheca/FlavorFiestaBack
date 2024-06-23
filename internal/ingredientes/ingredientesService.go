@@ -18,11 +18,7 @@ func NewService(r Repository) Service {
 }
 
 func (s *service) CrearIngredientes(ingredientes []domain.Ingredientes) error {
-    err := s.r.CrearIngredientes(ingredientes)
-    if err != nil {
-        return err
-    }
-    return nil
+    return s.r.CrearIngredientes(ingredientes)
 }
 
 func (s *service) BuscarIngredientes(id int) (domain.Ingredientes, error) {

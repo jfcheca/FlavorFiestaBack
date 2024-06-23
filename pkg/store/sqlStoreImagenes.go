@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/jfcheca/FlavorFiesta/internal/domain"
 	"log"
+
+	"github.com/jfcheca/FlavorFiesta/internal/domain"
 )
 
 type sqlStore struct {
@@ -36,12 +37,31 @@ func (s *sqlStore) CrearImagenes(imagenes []domain.Imagen) error {
 
     return nil
 }
+
+func (s *sqlStore) CrearImagenesMezclas(img []domain.Imagen) error {
+    query := "INSERT INTO imgmezcla (id_mezclas, titulo, url) VALUES (?, ?, ?);"
+    stmt, err := s.db.Prepare(query)
+    if err != nil {
+        return fmt.Errorf("error preparing query: %w", err)
+    }
+    defer stmt.Close()
+
+    for _, img := range img {
+        _, err := stmt.Exec(img.Id_mezclas, img.Titulo, img.Url)
+        if err != nil {
+            return fmt.Errorf("error executing query for image %v: %w", img, err)
+        }
+    }
+
+    return nil
+}
+
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  BUSCAR IMAGEN POR ID <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (s *sqlStore) BuscarImagen(id int) (domain.Imagen, error) {
 	var imagen domain.Imagen
-	query := "SELECT id, id_producto, titulo, url FROM imagenes WHERE id = ?"
+	query := "SELECT id, id_producto, id_mezclas, titulo, url FROM imagenes WHERE id = ?"
 
-	err := s.db.QueryRow(query, id).Scan(&imagen.ID, &imagen.Id_producto, &imagen.Titulo, &imagen.Url)
+	err := s.db.QueryRow(query, id).Scan(&imagen.ID, &imagen.Id_producto, &imagen.Id_mezclas, &imagen.Titulo, &imagen.Url)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return domain.Imagen{}, errors.New("imagen not found")

@@ -14,6 +14,7 @@ type Repository interface {
 	CrearImagenes(imagenes []domain.Imagen) error
 	UpdateImagen(id int, p domain.Imagen) (domain.Imagen, error)
 	DeleteImagen(id int) error
+    CrearImagenesMezclas(imagenes []domain.Imagen) error
 }
 
 type repository struct {
@@ -35,6 +36,15 @@ func (r *repository) CrearImagenes(imagenes []domain.Imagen) error {
     }
     return nil
 }
+
+func (r *repository) CrearImagenesMezclas(imagenes []domain.Imagen) error {
+    err := r.storage.CrearImagenesMezclas(imagenes)
+    if err != nil {
+        return fmt.Errorf("error al crear imágenes en el repositorio: %w", err)
+    }
+    return nil
+}
+
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BUSCAR IMAGEN POR ID >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 func (r *repository) BuscarImagen(id int) (domain.Imagen, error) {
 	product, err := r.storage.BuscarImagen(id)
