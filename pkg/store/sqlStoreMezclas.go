@@ -70,73 +70,94 @@ func (s *sqlStoreMezclas) CrearMezcla(mezcla domain.Mezclas) error {
 }
 
 func (s *sqlStoreMezclas) BuscarMezcla(id int) (domain.Mezclas, error) {
-	var mezcla domain.Mezclas
-	query := "SELECT id, nombre, descripcion FROM mezclas WHERE id = ?"
+    var mezcla domain.Mezclas
 
-	err := s.db.QueryRow(query, id).Scan(&mezcla.ID, &mezcla.Nombre, &mezcla.Descripcion)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return domain.Mezclas{}, errors.New("mezcla not found")
-		}
-		return domain.Mezclas{}, err
-	}
+    // Consulta para obtener la mezcla por su ID
+    query := "SELECT id, nombre, descripcion FROM mezclas WHERE id = ?"
+    err := s.db.QueryRow(query, id).Scan(&mezcla.ID, &mezcla.Nombre, &mezcla.Descripcion)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return domain.Mezclas{}, errors.New("mezcla not found")
+        }
+        return domain.Mezclas{}, err
+    }
 
-	// Obtener los ingredientes de la mezcla
-	ingredientesQuery := "SELECT id, descripcion, id_mezclas FROM ingredientes WHERE id_mezclas = ?"
-	ingRows, err := s.db.Query(ingredientesQuery, mezcla.ID)
-	if err != nil {
-		return domain.Mezclas{}, err
-	}
-	defer ingRows.Close()
+    // Obtener los ingredientes de la mezcla
+    ingredientesQuery := `
+        SELECT 
+            id, descripcion, id_mezclas
+        FROM 
+            ingredientes
+        WHERE 
+            id_mezclas = ?
+    `
+    ingRows, err := s.db.Query(ingredientesQuery, mezcla.ID)
+    if err != nil {
+        return domain.Mezclas{}, fmt.Errorf("error querying ingredientes: %w", err)
+    }
+    defer ingRows.Close()
 
-	var ingredientes []domain.Ingredientes
-	for ingRows.Next() {
-		var ingrediente domain.Ingredientes
-		if err := ingRows.Scan(&ingrediente.ID, &ingrediente.Descripcion, &ingrediente.Id_mezclas); err != nil {
-			return domain.Mezclas{}, err
-		}
-		ingredientes = append(ingredientes, ingrediente)
-	}
+    var ingredientes []domain.Ingredientes
+    for ingRows.Next() {
+        var ingrediente domain.Ingredientes
+        if err := ingRows.Scan(&ingrediente.ID, &ingrediente.Descripcion, &ingrediente.Id_mezclas); err != nil {
+            return domain.Mezclas{}, fmt.Errorf("error scanning ingrediente: %w", err)
+        }
+        ingredientes = append(ingredientes, ingrediente)
+    }
+    mezcla.Ingredientes = ingredientes
 
-	// Obtener las instrucciones de la mezcla
-	instruccionesQuery := "SELECT id, descripcion, id_mezclas FROM instrucciones WHERE id_mezclas = ?"
-	instRows, err := s.db.Query(instruccionesQuery, mezcla.ID)
-	if err != nil {
-		return domain.Mezclas{}, err
-	}
-	defer instRows.Close()
+    // Obtener las instrucciones de la mezcla
+    instruccionesQuery := `
+        SELECT 
+            id, descripcion, id_mezclas
+        FROM 
+            instrucciones
+        WHERE 
+            id_mezclas = ?
+    `
+    instRows, err := s.db.Query(instruccionesQuery, mezcla.ID)
+    if err != nil {
+        return domain.Mezclas{}, fmt.Errorf("error querying instrucciones: %w", err)
+    }
+    defer instRows.Close()
 
-	var instrucciones []domain.Instrucciones
-	for instRows.Next() {
-		var instruccion domain.Instrucciones
-		if err := instRows.Scan(&instruccion.ID, &instruccion.Descripcion, &instruccion.Id_mezclas); err != nil {
-			return domain.Mezclas{}, err
-		}
-		instrucciones = append(instrucciones, instruccion)
-	}
+    var instrucciones []domain.Instrucciones
+    for instRows.Next() {
+        var instruccion domain.Instrucciones
+        if err := instRows.Scan(&instruccion.ID, &instruccion.Descripcion, &instruccion.Id_mezclas); err != nil {
+            return domain.Mezclas{}, fmt.Errorf("error scanning instruccion: %w", err)
+        }
+        instrucciones = append(instrucciones, instruccion)
+    }
+    mezcla.Instrucciones = instrucciones
 
-	// Obtener las imágenes de la mezcla
-	imagenesQuery := "SELECT id, url, id_mezclas FROM imgmezcla WHERE id_mezclas = ?"
-	imgRows, err := s.db.Query(imagenesQuery, mezcla.ID)
-	if err != nil {
-		return domain.Mezclas{}, err
-	}
-	defer imgRows.Close()
+    // Obtener las imágenes de la mezcla
+    imagenesQuery := `
+        SELECT 
+            id, titulo, url, id_mezclas
+        FROM 
+            imgmezcla
+        WHERE 
+            id_mezclas = ?
+    `
+    imgRows, err := s.db.Query(imagenesQuery, mezcla.ID)
+    if err != nil {
+        return domain.Mezclas{}, fmt.Errorf("error querying imágenes: %w", err)
+    }
+    defer imgRows.Close()
 
-	var imagenes []domain.Imagen
-	for imgRows.Next() {
-		var imagen domain.Imagen
-		if err := imgRows.Scan(&imagen.ID, &imagen.Url, &imagen.Id_mezclas); err != nil {
-			return domain.Mezclas{}, err
-		}
-		imagenes = append(imagenes, imagen)
-	}
+    var imagenes []domain.Imagen
+    for imgRows.Next() {
+        var imagen domain.Imagen
+        if err := imgRows.Scan(&imagen.ID, &imagen.Titulo, &imagen.Url, &imagen.Id_mezclas); err != nil {
+            return domain.Mezclas{}, fmt.Errorf("error scanning imagen: %w", err)
+        }
+        imagenes = append(imagenes, imagen)
+    }
+    mezcla.Imagenes = imagenes
 
-	mezcla.Ingredientes = ingredientes
-	mezcla.Instrucciones = instrucciones
-	mezcla.Imagenes = imagenes
-
-	return mezcla, nil
+    return mezcla, nil
 }
 
 func (s *sqlStoreMezclas) DeleteMezclas(id int) error {
@@ -160,6 +181,7 @@ func (s *sqlStoreMezclas) DeleteMezclas(id int) error {
 func (s *sqlStoreMezclas) BuscarTodasLasMezclas() ([]domain.Mezclas, error) {
     var mezclas []domain.Mezclas
 
+    // Consulta para obtener todas las mezclas
     query := `
         SELECT 
             m.id, m.nombre, m.descripcion
@@ -195,13 +217,15 @@ func (s *sqlStoreMezclas) BuscarTodasLasMezclas() ([]domain.Mezclas, error) {
         }
         defer ingredientesRows.Close()
 
+        var ingredientes []domain.Ingredientes
         for ingredientesRows.Next() {
             var ingrediente domain.Ingredientes
             if err := ingredientesRows.Scan(&ingrediente.ID, &ingrediente.Descripcion, &ingrediente.Id_mezclas); err != nil {
                 return nil, fmt.Errorf("error scanning ingrediente: %w", err)
             }
-            mezcla.Ingredientes = append(mezcla.Ingredientes, ingrediente)
+            ingredientes = append(ingredientes, ingrediente)
         }
+        mezcla.Ingredientes = ingredientes
 
         // Obtener las instrucciones de la mezcla
         instruccionesQuery := `
@@ -218,13 +242,40 @@ func (s *sqlStoreMezclas) BuscarTodasLasMezclas() ([]domain.Mezclas, error) {
         }
         defer instruccionesRows.Close()
 
+        var instrucciones []domain.Instrucciones
         for instruccionesRows.Next() {
             var instruccion domain.Instrucciones
             if err := instruccionesRows.Scan(&instruccion.ID, &instruccion.Descripcion, &instruccion.Id_mezclas); err != nil {
                 return nil, fmt.Errorf("error scanning instruccion: %w", err)
             }
-            mezcla.Instrucciones = append(mezcla.Instrucciones, instruccion)
+            instrucciones = append(instrucciones, instruccion)
         }
+        mezcla.Instrucciones = instrucciones
+
+        // Obtener las imágenes de la mezcla
+        imagenesQuery := `
+            SELECT 
+                img.id, img.titulo, img.url, img.id_mezclas
+            FROM 
+                imgmezcla img
+            WHERE 
+                img.id_mezclas = ?
+        `
+        imagenesRows, err := s.db.Query(imagenesQuery, mezcla.ID)
+        if err != nil {
+            return nil, fmt.Errorf("error querying imágenes: %w", err)
+        }
+        defer imagenesRows.Close()
+
+        var imagenes []domain.Imagen
+        for imagenesRows.Next() {
+            var imagen domain.Imagen
+            if err := imagenesRows.Scan(&imagen.ID, &imagen.Titulo, &imagen.Url, &imagen.Id_mezclas); err != nil {
+                return nil, fmt.Errorf("error scanning imagen: %w", err)
+            }
+            imagenes = append(imagenes, imagen)
+        }
+        mezcla.Imagenes = imagenes
 
         mezclas = append(mezclas, mezcla)
     }
