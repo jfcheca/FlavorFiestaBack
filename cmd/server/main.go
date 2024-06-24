@@ -192,6 +192,7 @@ func main() {
 		authRoutes.POST("/login", authHandler.Login())
 		authRoutes.POST("/forgotPassword", authHandler.ForgotPassword())
 		authRoutes.POST("/tokenActivarCuenta", authHandler.ActivarCuenta())
+		authRoutes.POST("/contactenos", authHandler.ContactenosHandler) 
 	}
 
 	// Rutas para el manejo de usuarios

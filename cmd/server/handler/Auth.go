@@ -126,6 +126,33 @@ func (h *AuthHandler) ActivarCuenta() gin.HandlerFunc {
 		})
 	}
 }
+type ContactForm struct {
+    Nombre      string `json:"nombre" binding:"required"`
+    Email       string `json:"email" binding:"required,email"`
+    Asunto      string `json:"asunto" binding:"required"`
+    Descripcion string `json:"descripcion" binding:"required"`
+}
+
+// ContactenosHandler maneja la solicitud POST para el formulario de contacto
+func (h *AuthHandler) ContactenosHandler(c *gin.Context) {
+    var form ContactForm
+
+    // Validar y enlazar el JSON recibido a la estructura ContactForm
+    if err := c.ShouldBindJSON(&form); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    // Llamar a la función Contactenos con los datos del formulario
+    err := server.Contactenos(form.Nombre, form.Email, form.Asunto, form.Descripcion)
+    if err != nil {
+        log.Printf("Error sending contact email: %v", err)
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to send contact email"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "Contact email sent successfully"})
+}
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CONFIRMACION DE MAIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /*func enviarConfirmacionEmail(user domain.Usuarios, token string) error {

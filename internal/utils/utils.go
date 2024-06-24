@@ -157,7 +157,6 @@ func EnviarConfirmacionCuentaEmail(user domain.Usuarios, token string) error {
 		return err
 	}
 
-	// Configurar el mensaje de correo
 	m := mail.NewMessage()
 	m.SetHeader("From", smtpEmail)
 	m.SetHeader("To", user.Email)
@@ -172,4 +171,79 @@ func EnviarConfirmacionCuentaEmail(user domain.Usuarios, token string) error {
 		return err
 	}
 	return nil
+}
+
+func Contactenos(nombre, email, asunto, descripcion string) error {
+    smtpEmail := os.Getenv("SMTP_EMAIL")
+    smtpPassword := os.Getenv("SMTP_PASSWORD")
+
+    if smtpEmail == "" || smtpPassword == "" {
+        log.Printf("SMTP_EMAIL o SMTP_PASSWORD no está definido")
+        return fmt.Errorf("SMTP_EMAIL o SMTP_PASSWORD no está definido")
+    }
+
+    // Plantilla HTML como una cadena
+    htmlTemplate := `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Nuevo mensaje de Contactenos</title>
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #CC2D4A; font-weight: bold;">Nuevo mensaje de Contactenos</h2>
+            <p><strong>Nombre:</strong> {{ .Nombre }}</p>
+            <p><strong>Email:</strong> {{ .Email }}</p>
+            <p><strong>Asunto:</strong> {{ .Asunto }}</p>
+            <p><strong>Descripción:</strong></p>
+            <p>{{ .Descripcion }}</p>
+        </div>
+    </body>
+    </html>
+    `
+
+    // Cargar y parsear la plantilla HTML
+    tpl, err := template.New("emailTemplate").Parse(htmlTemplate)
+    if err != nil {
+        log.Printf("Error parsing template: %v", err)
+        return err
+    }
+
+    // Crear un buffer para renderizar la plantilla
+    var bodyContent bytes.Buffer
+    data := struct {
+        Nombre      string
+        Email       string
+        Asunto      string
+        Descripcion string
+    }{
+        Nombre:      nombre,
+        Email:       email,
+        Asunto:      asunto,
+        Descripcion: descripcion,
+    }
+    err = tpl.Execute(&bodyContent, data)
+    if err != nil {
+        log.Printf("Error executing template: %v", err)
+        return err
+    }
+
+    m := mail.NewMessage()
+    m.SetHeader("From", email) 
+    m.SetHeader("To", smtpEmail) 
+    m.SetHeader("Subject", " Contactenos: " + asunto)
+    m.SetBody("text/html", bodyContent.String())
+
+    d := mail.NewDialer("smtp.gmail.com", 587, smtpEmail, smtpPassword)
+
+    if err := d.DialAndSend(m); err != nil {
+        return err
+    }
+    return nil
 }
