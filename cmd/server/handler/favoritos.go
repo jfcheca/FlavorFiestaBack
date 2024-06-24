@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jfcheca/FlavorFiesta/internal/domain"
 	"github.com/jfcheca/FlavorFiesta/internal/favoritos"
@@ -99,20 +98,56 @@ func (h *favoritosHandler) GetFavoritosPorUsuario() gin.HandlerFunc {
     }
 }
 
+
+/*func ObtenerIDUsuarioDesdeContexto(c *gin.Context) (int, error) {
+	authorizationHeader := c.GetHeader("Authorization")
+	if authorizationHeader == "" {
+		return 0, errors.New("authorization header not found")
+	}
+
+	tokenString := strings.Replace(authorizationHeader, "Bearer ", "", 1)
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Verifica la firma del token JWT aquí
+		return []byte("your_secret_key"), nil
+	})
+	if err != nil {
+		return 0, fmt.Errorf("error parsing JWT token: %w", err)
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return 0, errors.New("invalid JWT token")
+	}
+
+	idUsuario := int(claims["id"].(float64)) // Asumiendo que el ID de usuario está en los claims del token
+	return idUsuario, nil
+}*/
+
 func (h *favoritosHandler) DeleteFavorito() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		idParam := c.Param("id")
-		id, err := strconv.Atoi(idParam)
+		// Obtener el ID del usuario y del producto de los parámetros de la URL
+		idUsuarioParam := c.Param("id_usuario")
+		idUsuario, err := strconv.Atoi(idUsuarioParam)
 		if err != nil {
-			web.Failure(c, 400, errors.New("invalid id"))
+			web.Failure(c, 400, errors.New("invalid id_usuario"))
 			return
 		}
-		err = h.s.DeleteFavorito(id)
+
+		idProductoParam := c.Param("id_producto")
+		idProducto, err := strconv.Atoi(idProductoParam)
 		if err != nil {
-			web.Failure(c, 404, err)
+			web.Failure(c, 400, errors.New("invalid id_producto"))
 			return
 		}
-		// Se elimina la categoria correctamente, enviar mensaje de éxito
-		c.JSON(200, gin.H{"message": "El favorito se elimino correctamente"})
+
+		// Eliminar el favorito usando el servicio
+		err = h.s.DeleteFavorito(idUsuario, idProducto)
+		if err != nil {
+			web.Failure(c, 404, err) // Not Found
+			return
+		}
+
+		// Respuesta exitosa
+		c.JSON(200, gin.H{"message": "El favorito se eliminó correctamente"})
 	}
 }

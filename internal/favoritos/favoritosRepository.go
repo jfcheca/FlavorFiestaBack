@@ -11,7 +11,7 @@ import (
 type Repository interface {
     
     AgregarFavorito(favorito domain.Favoritos) (domain.Favoritos, error)
-    DeleteFavorito(id int) error
+    DeleteFavorito(idUsuario, idProducto int) error
     BuscarFavorito(id int) (domain.Favoritos, error)
     BuscarFavoritosPorUsuario(idUsuario int) ([]domain.Favoritos, error)
 }
@@ -52,8 +52,8 @@ func (r *repository) BuscarFavoritosPorUsuario(idUsuario int) ([]domain.Favorito
 }
 
 
-func (r *repository) DeleteFavorito(id int) error {
-	err := r.storage.DeleteFavorito(id)
+func (r *repository) DeleteFavorito(idUsuario, idProducto int) error {
+	err := r.storage.DeleteFavorito(idUsuario, idProducto)
 	if err != nil {
 		return err
 	}

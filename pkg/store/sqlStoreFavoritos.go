@@ -2,8 +2,8 @@ package store
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
-	"log"
 
 	"github.com/jfcheca/FlavorFiesta/internal/domain"
 )
@@ -77,20 +77,28 @@ func (s *sqlStoreFavoritos) BuscarFavoritosPorUsuario(idUsuario int) ([]domain.F
     return favoritos, nil
 }
 
-func (s *sqlStoreFavoritos) DeleteFavorito(id int) error {
-	query := "DELETE FROM fav WHERE id = ?;"
+func (s *sqlStoreFavoritos) DeleteFavorito(idUsuario, idProducto int) error {
+	query := "DELETE FROM flavorfiesta.fav WHERE id_usuario = ? AND id_producto = ?;"
 	stmt, err := s.db.Prepare(query)
-	if err != nil {
-		log.Fatal(err)
-	}
-	res, err := stmt.Exec(id)
-	if err != nil {
-		log.Fatal(err)
-	}
-	_, err = res.RowsAffected()
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
+
+	res, err := stmt.Exec(idUsuario, idProducto)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("favorito no encontrado")
+	}
+
 	return nil
 }
 

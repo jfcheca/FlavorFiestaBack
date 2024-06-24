@@ -100,9 +100,10 @@ type StoreInterfaceOrdenProducto interface {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FAVORITOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 type StoreInterfaceFavoritos interface {
 	AgregarFavorito(favorito domain.Favoritos) error
-	DeleteFavorito(id int) error
+	DeleteFavorito(idUsuario, idProducto int) error
 	BuscarFavorito(id int) (domain.Favoritos, error)
 	BuscarFavoritosPorUsuario(idUsuario int) ([]domain.Favoritos, error) // Nueva función
+	
 }
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DATOS TARJETAS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
