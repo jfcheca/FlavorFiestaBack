@@ -160,8 +160,7 @@ func (h *categoriasHandler) Patch() gin.HandlerFunc {
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ELIMINAR UNA CATEGORIA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 func (h *categoriasHandler) DeleteCategoria() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "123456" {
+
 			// Permitir la eliminación de la imagen con el token correcto
 			idParam := c.Param("id")
 			id, err := strconv.Atoi(idParam)
@@ -169,6 +168,7 @@ func (h *categoriasHandler) DeleteCategoria() gin.HandlerFunc {
 				web.Failure(c, 400, errors.New("invalid id"))
 				return
 			}
+			// Llamar al servicio para eliminar la categoría
 			err = h.s.DeleteCategoria(id)
 			if err != nil {
 				web.Failure(c, 404, err)
@@ -176,10 +176,5 @@ func (h *categoriasHandler) DeleteCategoria() gin.HandlerFunc {
 			}
 			// Se elimina la categoria correctamente, enviar mensaje de éxito
 			c.JSON(200, gin.H{"message": "La categoria se elimino correctamente"})
-		} else {
-			// Token no válido
-			web.Failure(c, 401, errors.New("invalid token"))
-			return
-		}
+		} 
 	}
-}

@@ -127,8 +127,7 @@ func (h *ordenProductoHandler) Put() gin.HandlerFunc {
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ELIMINAR UNA ORDEN PRODUCTO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 func (h *ordenProductoHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "123456" {
+
 			// Permitir la eliminación del producto con el token correcto
 			idParam := c.Param("id")
 			id, err := strconv.Atoi(idParam)
@@ -143,10 +142,5 @@ func (h *ordenProductoHandler) Delete() gin.HandlerFunc {
 			}
 			// Se elimina el producto correctamente, enviar mensaje de éxito
 			c.JSON(200, gin.H{"message": "La OrdenProducto se elimino correctamente"})
-		} else {
-			// Token no válido
-			web.Failure(c, 401, errors.New("invalid token"))
-			return
-		}
-	}
+		} 
 }

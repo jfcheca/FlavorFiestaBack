@@ -228,8 +228,7 @@ func (h *usuariosHandler) GetAll() gin.HandlerFunc {
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ELIMINAR UN USUARIO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 func (h *usuariosHandler) DeleteUsuario() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "123456" {
+
 			// Permitir la eliminación del usuario con el token correcto
 			idParam := c.Param("id")
 			id, err := strconv.Atoi(idParam)
@@ -254,12 +253,7 @@ func (h *usuariosHandler) DeleteUsuario() gin.HandlerFunc {
 
 			// Usuario eliminado correctamente, enviar mensaje de éxito
 			c.JSON(200, gin.H{"message": "El usuario se eliminó correctamente"})
-		} else {
-			// Token no válido
-			web.Failure(c, 401, errors.New("invalid token"))
-			return
-		}
-	}
+		} 
 }
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ACTUALIZA UN USUARIO >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

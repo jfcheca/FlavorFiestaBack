@@ -164,8 +164,7 @@ func (h *imagenesHandler) Patch() gin.HandlerFunc {
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ELIMINAR UNA IMAGEN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (h *imagenesHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "123456" {
+
 			// Permitir la eliminación de la imagen con el token correcto
 			idParam := c.Param("id")
 			id, err := strconv.Atoi(idParam)
@@ -180,10 +179,5 @@ func (h *imagenesHandler) Delete() gin.HandlerFunc {
 			}
 			// Se elimina la imagen correctamente, enviar mensaje de éxito
 			c.JSON(200, gin.H{"message": "La imagen se elimino correctamente"})
-		} else {
-			// Token no válido
-			web.Failure(c, 401, errors.New("invalid token"))
-			return
-		}
-	}
+		} 
 }

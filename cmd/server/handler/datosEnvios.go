@@ -109,15 +109,13 @@ func (h *datosEnvioHandler) Put() gin.HandlerFunc {
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ELIMINAR DATOSENVIO <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (h *datosEnvioHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "123456" {
 			idParam := c.Param("id")
 			id, err := strconv.Atoi(idParam)
 			if err != nil {
 				web.Failure(c, 400, errors.New("invalid id"))
 				return
 			}
-
+			// Llamar al servicio para eliminar la los datos
 			err = h.s.EliminarDatosEnvio(id)
 			if err != nil {
 				web.Failure(c, 404, err)
@@ -125,8 +123,5 @@ func (h *datosEnvioHandler) Delete() gin.HandlerFunc {
 			}
 
 			web.Success(c, 200, gin.H{"message": "datos de envio eliminado correctamente"})
-		} else {
-			web.Failure(c, 401, errors.New("invalid token"))
-		}
+		} 
 	}
-}

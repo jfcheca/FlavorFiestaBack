@@ -161,8 +161,7 @@ func (h *ordenHandler) Put() gin.HandlerFunc {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ELIMINA LA ORDEN <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 func (h *ordenHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.GetHeader("TOKEN")
-		if token == "123456" {
+
 			idParam := c.Param("id")
 			id, err := strconv.Atoi(idParam)
 			if err != nil {
@@ -175,12 +174,9 @@ func (h *ordenHandler) Delete() gin.HandlerFunc {
 				return
 			}
 			c.JSON(200, gin.H{"message": "La orden se eliminó correctamente"})
-		} else {
-			web.Failure(c, 401, errors.New("invalid token"))
-			return
-		}
-	}
+		} 
 }
+
 func (h *ordenHandler) ObtenerOrdenesPorUsuarioYEstadoDiferenteA1() gin.HandlerFunc {
     return func(c *gin.Context) {
         userIDStr := c.Param("userID")

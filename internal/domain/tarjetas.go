@@ -9,5 +9,5 @@ type Tarjetas struct {
     Clave_Seguridad       string `json:"clave_seguridad"`
     Vencimiento           string `json:"vencimiento"`	
     Ultimos_Cuatro_Digitos string `json:"ultimos_cuatro_digitos"`
-    ID_Usuario            int    `json:"id_usuario"`  // Agrega este campo
+    ID_Usuario            int    `json:"id_usuario"`  
 }
