@@ -109,7 +109,7 @@ func main() {
     r.Static("/Probando", "./public")
 
     r.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{"http://localhost:5173"}, // URL del frontend
+        AllowOrigins:     []string{"http://localhost:5173"}, // URL del frontend, original: http://localhost:5173
         AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"},
         AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
         AllowCredentials: true,
