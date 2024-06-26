@@ -62,7 +62,7 @@ func main() {
     }
     defer db.Close()
 
-/*    // Eliminar la base de datos si ya existe
+    // Eliminar la base de datos si ya existe
     _, err = db.Exec("DROP DATABASE IF EXISTS " + dbName)
     if err != nil {
         log.Fatal("Error al eliminar la base de datos '" + dbName + "':", err)
@@ -73,7 +73,7 @@ func main() {
     if err != nil {
         log.Fatal("Error al crear la base de datos '" + dbName + "':", err)
     }
-*/
+
     // Conectar a la base de datos
     dsn = dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
     bd, err := sql.Open("mysql", dsn)

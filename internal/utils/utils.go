@@ -58,7 +58,7 @@ func EnviarConfirmacionEmail(user domain.Usuarios, token string) error {
 	}
 
 	// Construir la URL de restablecimiento
-	resetURL := fmt.Sprintf("http://localhost:5173/ResetPassword/%d/%s", user.ID, token)
+	resetURL := fmt.Sprintf("http://3.149.228.130:5173/ResetPassword/%d/%s", user.ID, token)
 
 	// Crear un buffer para renderizar la plantilla
 	var bodyContent bytes.Buffer
@@ -140,7 +140,7 @@ func EnviarConfirmacionCuentaEmail(user domain.Usuarios, token string) error {
 	}
 
 	// Construir la URL de activación
-	activationURL := fmt.Sprintf("http://localhost:5173/ActivateAccount/%d/%s", user.ID, token)
+	activationURL := fmt.Sprintf("http://3.149.228.130:5173/ActivateAccount/%d/%s", user.ID, token)
 
 	// Crear un buffer para renderizar la plantilla
 	var bodyContent bytes.Buffer
