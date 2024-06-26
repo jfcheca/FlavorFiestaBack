@@ -62,7 +62,7 @@ func main() {
     }
     defer db.Close()
 
-    // Eliminar la base de datos si ya existe
+/*    // Eliminar la base de datos si ya existe
     _, err = db.Exec("DROP DATABASE IF EXISTS " + dbName)
     if err != nil {
         log.Fatal("Error al eliminar la base de datos '" + dbName + "':", err)
@@ -73,7 +73,7 @@ func main() {
     if err != nil {
         log.Fatal("Error al crear la base de datos '" + dbName + "':", err)
     }
-
+*/
     // Conectar a la base de datos
     dsn = dbUser + ":" + dbPassword + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
     bd, err := sql.Open("mysql", dsn)
@@ -351,7 +351,7 @@ func main() {
 	informacionCompra := r.Group("/informacionCompra")
 	{
 		informacionCompra.GET("/:id", estadoInformacionCompra.GetByID())
-		informacionCompra.GET("/informacionCompleta/:id_orden", estadoInformacionCompra.ObtenerInformacionCompletaCompraByIDOrden()) 
+		informacionCompra.GET("/informacionCompleta/orden/:id_orden", estadoInformacionCompra.ObtenerInformacionCompletaCompraByIDOrden()) 
 		informacionCompra.POST("/crear", estadoInformacionCompra.Post())
 		informacionCompra.PUT("/:id", estadoInformacionCompra.Put())
 		informacionCompra.DELETE("/:id", estadoInformacionCompra.Delete())
